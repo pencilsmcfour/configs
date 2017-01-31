@@ -1,0 +1,20 @@
+# Version: 1
+# Revision: 2
+# Last Update: 2014/03/05
+# Look and feel
+hardstatus on
+hardstatus alwayslastline "%{= kd} %{= kd}%-w%{= kr}[%{= kW}%n %t%{= kr}]%{= kd}%+w %-= %{kG}%H %{kW}| %{= kc}%c%{-}"
+
+# Our warning of activity
+activity "Activity in %t(%n)"
+
+# Left Right meta key mods
+# ALT-,.
+bindkey "^[," prev
+bindkey "^[." next
+
+screen 0
+screen -t vim -L 1 vim .
+screen -t man -L 2
+screen -L 3
+select 0
