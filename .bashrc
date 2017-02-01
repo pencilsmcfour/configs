@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -29,11 +31,6 @@ shopt -s checkwinsize
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
@@ -76,7 +73,11 @@ BRIGHT_MAGENTA="\[\033[01;35m\]"
 BRIGHT_CYAN="\[\033[01;36m\]"
 BRIGHT_WHITE="\[\033[01;37m\]"
 
-export PS1="________________________________________________________________________________\n| ${BRIGHT_CYAN}\w ${UNCOLORED_TEXT}@ ${BRIGHT_GREEN}\h ${BRIGHT_BLUE}(\u) \
+# TODO: alternate colors while printing sub-dir names. Keep the slash the same color.
+
+export PS1="\$(if [[ \$? -ne 0 ]] ; then echo -n '\[\033[01;31m\]' ; fi)\
+\$(i=0 ; while [[ i -lt COLUMNS ]] ; do echo -n '_'; : \$((i=i+1)) ; done)\n${UNCOLORED_TEXT}| ${BRIGHT_CYAN}\w ${UNCOLORED_TEXT}@ ${BRIGHT_GREEN}\h ${BRIGHT_BLUE}(\u) \
+${BRIGHT_YELLOW}\$(if [[ -e .git ]] ; then git --git-dir=.git branch --no-color 2>/dev/null | grep '^*' | colrm 1 2 ; fi) \
 \n${UNCOLORED_TEXT}| => "
 export PS2="| => "
 
