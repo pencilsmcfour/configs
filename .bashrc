@@ -74,6 +74,8 @@ BRIGHT_CYAN="\[\033[01;36m\]"
 BRIGHT_WHITE="\[\033[01;37m\]"
 
 # TODO: alternate colors while printing sub-dir names. Keep the slash the same color.
+# TODO: give a different symbol for changes, new files, deleted files in git
+# TODO: move the user name and current working directory
 
 export PS1="\
 \$(if [[ \$? -ne 0 ]] ; then echo -n '\[\033[01;31m\]' ; fi)\
