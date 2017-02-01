@@ -1,3 +1,4 @@
 # Ignore vim temporary files.
 .*.sw?
+.sw?
 *~

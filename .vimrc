@@ -2,7 +2,7 @@
 syntax on
 
 " For plugins to load correctly
-filetype plugin indent on
+" filetype plugin indent on
 
 " Security
 set modelines=0
