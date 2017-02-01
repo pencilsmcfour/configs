@@ -75,10 +75,14 @@ BRIGHT_WHITE="\[\033[01;37m\]"
 
 # TODO: alternate colors while printing sub-dir names. Keep the slash the same color.
 
-export PS1="\$(if [[ \$? -ne 0 ]] ; then echo -n '\[\033[01;31m\]' ; fi)\
-\$(i=0 ; while [[ i -lt COLUMNS ]] ; do echo -n '_'; : \$((i=i+1)) ; done)\n${UNCOLORED_TEXT}| ${BRIGHT_CYAN}\w ${UNCOLORED_TEXT}@ ${BRIGHT_GREEN}\h ${BRIGHT_BLUE}(\u) \
-${BRIGHT_YELLOW}\$(if [[ -e .git ]] ; then git --git-dir=.git branch --no-color 2>/dev/null | grep '^*' | colrm 1 2 ; fi) \
-\n${UNCOLORED_TEXT}| => "
+export PS1="\
+\$(if [[ \$? -ne 0 ]] ; then echo -n '\[\033[01;31m\]' ; fi)\
+\$(i=0 ; while [[ i -lt COLUMNS ]] ; do echo -n '_'; : \$((i=i+1)) ; done)\n\
+${BRIGHT_YELLOW}| ${BRIGHT_MAGENTA}\! ${BRIGHT_CYAN}\w ${UNCOLORED_TEXT}@ ${BRIGHT_GREEN}\h ${BRIGHT_BLUE}(\u) \
+${UNCOLORED_TEXT}[${BRIGHT_MAGENTA}\t${UNCOLORED_TEXT}] \
+${BRIGHT_YELLOW}\$(if [[ -e .git ]] ; then git branch --no-color 2>/dev/null | grep '^*' | colrm 1 2 ; fi) \
+${BRIGHT_RED}\$(test \$(git status --porcelain 2>/dev/null | wc -l) -ne 0 && echo -ne \"\xce\x94\") \
+\n${BRIGHT_YELLOW}| => ${UNCOLORED_TEXT}"
 export PS2="| => "
 
 # Colored output
