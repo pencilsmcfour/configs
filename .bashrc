@@ -131,3 +131,12 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# golang
+LENGTH_1="1" # non-zero length
+DESIRED_GOPATH=~/gopath
+GO_INSTALL_PATH=/usr/local/go
+if [[ -z ${GOPATH+LENGTH_1} && -e ${GO_INSTALL_PATH} && -d ${DESIRED_GOPATH} ]] ; then
+	export GOPATH=${DESIRED_GOPATH}
+fi
+unset LENGTH_1
