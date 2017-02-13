@@ -140,7 +140,8 @@ if [[ -z ${GOPATH+LENGTH_1} && -e ${GO_INSTALL_PATH} && -d ${DESIRED_GOPATH} ]] 
 	export GOPATH=${DESIRED_GOPATH}
 fi
 unset LENGTH_1
-GO_EXECUTABLE=/usr/local/go/bin
-if [[ ! ${PATH} =~ (:|^)${GO_EXECUTABLE}(:|$) ]] ; then
-	PATH=${PATH}:${GO_EXECUTABLE}
+GO_BIN=/usr/local/go/bin/go
+GO_BIN_DIR=$(dirname ${GO_BIN})
+if [[ -e ${GO_BIN} && ! ${PATH} =~ (:|^)${GO_BIN_DIR}(:|$) ]] ; then
+	PATH=${PATH}:${GO_BIN_DIR}
 fi
