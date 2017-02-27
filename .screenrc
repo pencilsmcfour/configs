@@ -3,7 +3,7 @@
 # Last Update: 2014/03/05
 # Look and feel
 hardstatus on
-hardstatus alwayslastline "%{= kd} %{= kd}%-w%{= kr}[%{= kW}%n %t%{= kr}]%{= kd}%+w %-= %{kG}%H %{kW}| %{= kc}%c%{-}"
+hardstatus alwayslastline "%{= d} %{= d}%-w%{= r}[%{= W}%n %t%{= r}]%{= d}%+w %-= %{G}%H %{W}| %{= c}%c%{-}"
 
 # Our warning of activity
 activity "Activity in %t(%n)"
