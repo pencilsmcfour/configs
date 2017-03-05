@@ -87,7 +87,6 @@ ${BRIGHT_RED}\$(test \$(git status --porcelain 2>/dev/null | wc -l) -ne 0 && ech
 \n${BRIGHT_YELLOW}| ${BRIGHT_MAGENTA}\! ${BRIGHT_YELLOW}=> ${UNCOLORED_TEXT}"
 export PS2="| => "
 
-#${BRIGHT_YELLOW}\$(if [[ -e .git ]] ; then git branch --no-color 2>/dev/null | grep '^*' | colrm 1 2 ; fi) \
 # Colored output
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
