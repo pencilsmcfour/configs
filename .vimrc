@@ -25,3 +25,5 @@ set laststatus=2
 " Last line
 set showmode
 set showcmd
+
+colorscheme evening
