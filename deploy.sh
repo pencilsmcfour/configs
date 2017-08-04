@@ -8,6 +8,11 @@ then
 	exit 1
 fi
 
+[[ -d ~/.vim/autoload ]] || mkdir -p ~/.vim/autoload
+[[ -d ~/.vim/bundle ]] || mkdir -p ~/.vim/bundle
+[[ -e ~/.vim/autoload/pathogen.vim ]] || \
+	curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+
 for f in ${FILES[@]}
 do
 	[[ -e ${f} ]] || continue
