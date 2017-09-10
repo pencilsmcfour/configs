@@ -30,3 +30,10 @@ set showmode
 set showcmd
 
 colorscheme evening
+
+" Un-comment if ~/.vim/syntax/jflex.vim exists for jflex highlighting
+" http://jflex.de/vim.html
+" augroup filetype
+"   au BufRead,BufNewFile *.flex,*.jflex    set filetype=jflex
+" augroup END
+" au Syntax jflex    so ~/.vim/syntax/jflex.vim
