@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILES=(.bashrc .bash_profile .screenrc .vimrc)
+FILES=(.bashrc .bash_profile .screenrc .vimrc .tmux.conf .ssh/rc)
 
 if [[ ! -d ~ ]]
 then
@@ -19,7 +19,7 @@ do
 	if [[ -e ~/${f} ]]
 	then
 		diff ${f} ~/${f} &>/dev/null && continue
-		[[ -d /tmp ]] && cp ~/${f} /tmp/${f}.bk
+		[[ -d /tmp ]] && cp ~/${f} /tmp/${f//\//.}.bk
 	fi
 	cp ${f} ~/${f} && echo "deployed ${f}"
 done
