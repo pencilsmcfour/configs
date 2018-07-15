@@ -145,3 +145,9 @@ GO_BIN_DIR=$(dirname ${GO_BIN})
 if [[ -e ${GO_BIN} && ! ${PATH} =~ (:|^)${GO_BIN_DIR}(:|$) ]] ; then
 	PATH=${PATH}:${GO_BIN_DIR}
 fi
+
+# Put ~/bin on the path if it exists.
+HOMEBIN=~/bin
+if [[ -d ~/bin && ! "${PATH}" =~ ${HOMEBIN} ]] ; then
+	PATH=${HOMEBIN}:${PATH}
+fi
