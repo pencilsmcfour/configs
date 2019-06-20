@@ -151,3 +151,12 @@ HOMEBIN=~/bin
 if [[ -d ~/bin && ! "${PATH}" =~ ${HOMEBIN} ]] ; then
 	PATH=${HOMEBIN}:${PATH}
 fi
+
+# rbenv
+# https://github.com/rbenv/rbenv
+if type rbenv &> /dev/null ; then
+  eval "$(rbenv init -)"
+fi
+SHIMS_DIR_W_SEP=${HOME}/.rbenv/shims:
+PATH=$(echo "${PATH}" | \
+       sed 's%\('${SHIMS_DIR_W_SEP}'\)\{2,\}%'${SHIMS_DIR_W_SEP}'%')
