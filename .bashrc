@@ -143,13 +143,13 @@ unset LENGTH_1
 GO_BIN=/usr/local/go/bin/go
 GO_BIN_DIR=$(dirname ${GO_BIN})
 if [[ -e ${GO_BIN} && ! ${PATH} =~ (:|^)${GO_BIN_DIR}(:|$) ]] ; then
-	PATH=${PATH}:${GO_BIN_DIR}
+	export PATH=${PATH}:${GO_BIN_DIR}
 fi
 
 # Put ~/bin on the path if it exists.
 HOMEBIN=~/bin
 if [[ -d ~/bin && ! "${PATH}" =~ ${HOMEBIN} ]] ; then
-	PATH=${HOMEBIN}:${PATH}
+	export PATH=${HOMEBIN}:${PATH}
 fi
 
 # rbenv
@@ -158,5 +158,5 @@ if type rbenv &> /dev/null ; then
   eval "$(rbenv init -)"
 fi
 SHIMS_DIR_W_SEP=${HOME}/.rbenv/shims:
-PATH=$(echo "${PATH}" | \
+export PATH=$(echo "${PATH}" | \
        sed 's%\('${SHIMS_DIR_W_SEP}'\)\{2,\}%'${SHIMS_DIR_W_SEP}'%')
