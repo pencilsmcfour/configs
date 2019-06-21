@@ -152,15 +152,6 @@ if [[ -d ~/bin && ! "${PATH}" =~ ${HOMEBIN} ]] ; then
 	export PATH=${HOMEBIN}:${PATH}
 fi
 
-# Make sure the location of installed Python3 scripts is in PATH
-if type python3 &> /dev/null ; then
-  PY3_USER_BIN=$(python3 -c 'import site; print(site.USER_BASE + "/bin")')
-  if [[ -n ${PY3_USER_BIN} && \
-        -e ${PY3_USER_BIN} && \
-        ! "${PATH}" =~ ${PY3_USER_BIN} ]] ; then
-    export PATH=${PY3_USER_BIN}:${PATH}
-  fi
-fi
 # Make sure the location of installed Python2 scripts is in PATH
 if type python &> /dev/null ; then
   PY_USER_BIN=$(python -c 'import site; print(site.USER_BASE + "/bin")')
@@ -168,6 +159,15 @@ if type python &> /dev/null ; then
         -e ${PY_USER_BIN} && \
         ! "${PATH}" =~ ${PY_USER_BIN} ]] ; then
     export PATH=${PY_USER_BIN}:${PATH}
+  fi
+fi
+# Make sure the location of installed Python3 scripts is in PATH
+if type python3 &> /dev/null ; then
+  PY3_USER_BIN=$(python3 -c 'import site; print(site.USER_BASE + "/bin")')
+  if [[ -n ${PY3_USER_BIN} && \
+        -e ${PY3_USER_BIN} && \
+        ! "${PATH}" =~ ${PY3_USER_BIN} ]] ; then
+    export PATH=${PY3_USER_BIN}:${PATH}
   fi
 fi
 
