@@ -152,6 +152,16 @@ if [[ -d ~/bin && ! "${PATH}" =~ ${HOMEBIN} ]] ; then
 	export PATH=${HOMEBIN}:${PATH}
 fi
 
+# Make sure the location of installed Python scripts is in PATH
+if type python &> /dev/null ; then
+  export PY_USER_BIN=$(python -c 'import site; print(site.USER_BASE + "/bin")')
+  if [[ -n ${PY_USER_BIN} && \
+        -e ${PY_USER_BIN} && \
+        ! "${PATH}" =~ ${PY_USER_BIN} ]] ; then
+    export PATH=${PY_USER_BIN}:${PATH}
+  fi
+fi
+
 # rbenv
 # https://github.com/rbenv/rbenv
 if type rbenv &> /dev/null ; then
@@ -160,3 +170,24 @@ fi
 SHIMS_DIR_W_SEP=${HOME}/.rbenv/shims:
 export PATH=$(echo "${PATH}" | \
        sed 's%\('${SHIMS_DIR_W_SEP}'\)\{2,\}%'${SHIMS_DIR_W_SEP}'%')
+
+function dedup_awk ()
+{
+  echo "$1" | awk -v RS=: \
+    'BEGIN { first_entry = 1; }
+    {
+      if(! a[$0]) {
+        a[$0] = 1;
+        if(first_entry) {
+          first_entry = 0;
+        } else {
+          printf(":");
+        }
+        printf("%s", $0);
+      }
+    }'
+}
+DEDUPED_PATH=$(dedup_awk ${PATH})
+if [[ "${DEDUPED_PATH}" != "${PATH}" ]] ; then
+  export PATH=${DEDUPED_PATH}
+fi
