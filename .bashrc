@@ -171,6 +171,11 @@ if type python3 &> /dev/null ; then
   fi
 fi
 
+# pyenv
+if type pyenv &> /dev/null ; then
+  eval "$(pyenv init -)"
+fi
+
 # rbenv
 # https://github.com/rbenv/rbenv
 if type rbenv &> /dev/null ; then
