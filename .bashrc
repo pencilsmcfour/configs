@@ -185,6 +185,13 @@ SHIMS_DIR_W_SEP=${HOME}/.rbenv/shims:
 export PATH=$(echo "${PATH}" | \
        sed 's%\('${SHIMS_DIR_W_SEP}'\)\{2,\}%'${SHIMS_DIR_W_SEP}'%')
 
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
+
+
+
 function dedup_awk ()
 {
   echo "$1" | awk -v RS=: \
