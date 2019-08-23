@@ -176,6 +176,12 @@ if type pyenv &> /dev/null ; then
   eval "$(pyenv init -)"
 fi
 
+# pipx
+DOT_LOCAL_BIN=~/.local/bin
+if [[ -d ${DOT_LOCAL_BIN} && ! "${PATH}" =~ ${DOT_LOCAL_BIN} ]] ; then
+	export PATH=${DOT_LOCAL_BIN}:${PATH}
+fi
+
 # rbenv
 # https://github.com/rbenv/rbenv
 if type rbenv &> /dev/null ; then
