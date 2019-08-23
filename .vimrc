@@ -29,7 +29,7 @@ set laststatus=2
 set showmode
 set showcmd
 
-colorscheme evening
+colorscheme ron
 
 " Un-comment if ~/.vim/syntax/jflex.vim exists for jflex highlighting
 " http://jflex.de/vim.html
