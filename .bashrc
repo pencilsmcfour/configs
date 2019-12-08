@@ -233,3 +233,5 @@ if [ -f '/usr/local/bin/google-cloud-sdk/path.bash.inc' ]; then . '/usr/local/bi
 # The next line enables shell command completion for gcloud.
 if [ -f '/usr/local/bin/google-cloud-sdk/completion.bash.inc' ]; then . '/usr/local/bin/google-cloud-sdk/completion.bash.inc'; fi
 
+# This silences the warning message about how the default shell is zsh
+export BASH_SILENCE_DEPRECATION_WARNING=1
