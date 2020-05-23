@@ -145,6 +145,10 @@ GO_BIN_DIR=$(dirname ${GO_BIN})
 if [[ -e ${GO_BIN} && ! ${PATH} =~ (:|^)${GO_BIN_DIR}(:|$) ]] ; then
 	export PATH=${PATH}:${GO_BIN_DIR}
 fi
+DEFAULT_GOBIN=~/go/bin
+if [[ -d ${DEFAULT_GOBIN} && ! ${PATH} =~ (:|^)${DEFAULT_GOBIN}(:|$) ]] ; then
+	export PATH=${PATH}:${DEFAULT_GOBIN}
+fi
 
 # Put ~/bin on the path if it exists.
 HOMEBIN=~/bin
