@@ -210,6 +210,10 @@ if [[ -d ${DOT_POETRY_BIN} && ! "${PATH}" =~ ${DOT_POETRY_BIN} ]] ; then
 	export PATH=${DOT_POETRY_BIN}:${PATH}
 fi
 
+# aws cli
+alias awscli='docker run --rm -v ~/.aws:/root/.aws amazon/aws-cli:latest'
+alias awsman='docker run --rm -it amazon/aws-cli:latest'
+
 function dedup_awk ()
 {
   echo "$1" | awk -v RS=: \
