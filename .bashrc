@@ -216,6 +216,7 @@ alias awsman='docker run --rm -it amazon/aws-cli:latest'
 
 # kubernetes
 export KUBECONFIG=${HOME}/.kube/config
+alias k=kubectl
 
 function dedup_awk ()
 {
