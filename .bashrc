@@ -218,6 +218,12 @@ alias awsman='docker run --rm -it amazon/aws-cli:latest'
 export KUBECONFIG=${HOME}/.kube/config
 alias k=kubectl
 
+# company/job/project-specific configuration
+COMPANY_CONFIG=/usr/local/etc/profile.sh
+if [[ -e ${COMPANY_CONFIG} ]] ; then
+  source ${COMPANY_CONFIG}
+fi
+
 function dedup_awk ()
 {
   echo "$1" | awk -v RS=: \
