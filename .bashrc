@@ -77,10 +77,21 @@ BRIGHT_WHITE="\[\033[01;37m\]"
 # TODO: give a different symbol for changes, new files, deleted files in git
 # TODO: move the user name and current working directory
 
+# kubernetes
+export KUBECONFIG=${HOME}/.kube/config
+alias k=kubectl
+# https://github.com/jonmosco/kube-ps1
+# makes kube_ps1 available as a command
+# kube_ps1 is used in setting the prompt PS1
+KUBE_PS1_FILE=/usr/local/opt/kube-ps1/share/kube-ps1.sh
+if [[ -e ${KUBE_PS1_FILE} ]] ; then
+  source ${KUBE_PS1_FILE}
+fi
+
 export PS1="\
 \$(if [[ \$? -ne 0 ]] ; then echo -n '\[\033[01;31m\]' ; fi)\
 \$(i=0 ; while [[ i -lt COLUMNS ]] ; do echo -n '_'; : \$((i=i+1)) ; done)\n\
-${BRIGHT_YELLOW}| ${BRIGHT_CYAN}\w ${UNCOLORED_TEXT}@ ${BRIGHT_GREEN}\h ${BRIGHT_BLUE}(\u) \
+${BRIGHT_YELLOW}|${UNCOLORED_TEXT}\$(if kube_ps1 &>/dev/null ; then echo -n ' ' ; kube_ps1 ; fi) ${BRIGHT_CYAN}\w ${UNCOLORED_TEXT}@ ${BRIGHT_GREEN}\h ${BRIGHT_BLUE}(\u) \
 ${UNCOLORED_TEXT}[${BRIGHT_MAGENTA}\t${UNCOLORED_TEXT}] \
 ${BRIGHT_YELLOW}\$(git branch 2>/dev/null | awk '\$1 == \"*\" { print \$2 }') \
 ${BRIGHT_RED}\$(test \$(git status --porcelain 2>/dev/null | wc -l) -ne 0 && echo -ne \"\xce\x94\") \
@@ -213,10 +224,6 @@ fi
 # aws cli
 alias awscli='docker run --rm -v ~/.aws:/root/.aws amazon/aws-cli:latest'
 alias awsman='docker run --rm -it amazon/aws-cli:latest'
-
-# kubernetes
-export KUBECONFIG=${HOME}/.kube/config
-alias k=kubectl
 
 # company/job/project-specific configuration
 COMPANY_CONFIG=/usr/local/etc/profile.sh

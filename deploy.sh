@@ -24,4 +24,15 @@ do
 	cp ${f} ~/${f} && echo "deployed ${f}"
 done
 
+KUBE_PS1_FILE=/usr/local/opt/kube-ps1/share/kube-ps1.sh
+if [[ ! -e ${KUBE_PS1_FILE} ]]
+then
+	echo "WARNING:"
+	echo "${KUBE_PS1_FILE} does not exist, is kube_ps1 installed?"
+	echo "kube_ps1 prints useful info about the active Kubernetes cluster"
+	echo "and namespace, like (⎈ |minikube:default). If you want that in"
+	echo "your prompt, install kube_ps1 and run deploy.sh again."
+	echo "See https://github.com/jonmosco/kube-ps1."
+fi
+
 exit 0
