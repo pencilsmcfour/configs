@@ -221,6 +221,13 @@ if [[ -d ${DOT_POETRY_BIN} && ! "${PATH}" =~ ${DOT_POETRY_BIN} ]] ; then
 	export PATH=${DOT_POETRY_BIN}:${PATH}
 fi
 
+# homebrew
+BREW_DIR=/opt/homebrew
+BREW_BIN_DIR=${BREW_DIR}/bin
+if [[ -d ${BREW_BIN_DIR} && ! "${PATH}" =~ ${BREW_BIN_DIR} ]] ; then
+	export PATH=${BREW_BIN_DIR}:${PATH}
+fi
+
 # aws cli
 alias awscli='docker run --rm -v ~/.aws:/root/.aws amazon/aws-cli:latest'
 alias awsman='docker run --rm -it amazon/aws-cli:latest'
