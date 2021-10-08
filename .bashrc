@@ -226,7 +226,7 @@ BREW_DIR=/opt/homebrew
 BREW_BIN_DIR=${BREW_DIR}/bin
 BREW_BIN=${BREW_BIN_DIR}/brew
 if [[ -e ${BREW_BIN} ]] ; then
-  eval "$(BREW_BIN shellenv)"
+  eval "$(${BREW_BIN} shellenv)"
 fi
 
 
