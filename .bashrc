@@ -224,9 +224,11 @@ fi
 # homebrew
 BREW_DIR=/opt/homebrew
 BREW_BIN_DIR=${BREW_DIR}/bin
-if [[ -d ${BREW_BIN_DIR} && ! "${PATH}" =~ ${BREW_BIN_DIR} ]] ; then
-	export PATH=${BREW_BIN_DIR}:${PATH}
+BREW_BIN=${BREW_BIN_DIR}/brew
+if [[ -e ${BREW_BIN} ]] ; then
+  eval "$(BREW_BIN shellenv)"
 fi
+
 
 # aws cli
 alias awscli='docker run --rm -v ~/.aws:/root/.aws amazon/aws-cli:latest'
