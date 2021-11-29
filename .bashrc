@@ -186,6 +186,14 @@ if type python3 &> /dev/null ; then
   fi
 fi
 
+# homebrew
+BREW_DIR=/opt/homebrew
+BREW_BIN_DIR=${BREW_DIR}/bin
+BREW_BIN=${BREW_BIN_DIR}/brew
+if [[ -e ${BREW_BIN} ]] ; then
+  eval "$(${BREW_BIN} shellenv)"
+fi
+
 # pyenv
 if type pyenv &> /dev/null ; then
   eval "$(pyenv init -)"
@@ -220,15 +228,6 @@ DOT_POETRY_BIN=~/.poetry/bin
 if [[ -d ${DOT_POETRY_BIN} && ! "${PATH}" =~ ${DOT_POETRY_BIN} ]] ; then
 	export PATH=${DOT_POETRY_BIN}:${PATH}
 fi
-
-# homebrew
-BREW_DIR=/opt/homebrew
-BREW_BIN_DIR=${BREW_DIR}/bin
-BREW_BIN=${BREW_BIN_DIR}/brew
-if [[ -e ${BREW_BIN} ]] ; then
-  eval "$(${BREW_BIN} shellenv)"
-fi
-
 
 # aws cli
 alias awscli='docker run --rm -v ~/.aws:/root/.aws amazon/aws-cli:latest'
