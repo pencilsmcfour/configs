@@ -7,6 +7,7 @@ put-last-in-path() {
   echo -n "${path}" | \
     awk -v RS=':' \
         -v ORS=':' \
-    '! /'"${putlast}"'/ {print}'
+        -v putlast="${putlast}" \
+    '$0 !~ putlast {print}'
   echo "${putlast}"
 }
