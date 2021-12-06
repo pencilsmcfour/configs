@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
-source put-last-in-path.sh
+unset put-last-in-path
+PS1=test source .bashrc
+export -f put-last-in-path
 run_test() {
   path="$1"
   putlast="$2"

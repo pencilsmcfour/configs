@@ -241,6 +241,18 @@ function say_path ()
   echo $PATH | awk -v RS=':' {print}
 }
 
+put-last-in-path() {
+  path="$1"
+  putlast="$2"
+  # if there are spaces in path, don't even try
+  echo -n "${path}" | \
+    awk -v RS=':' \
+        -v ORS=':' \
+        -v putlast="${putlast}" \
+    '$0 !~ putlast {print}'
+  echo "${putlast}"
+}
+
 # company/job/project-specific configuration
 COMPANY_CONFIG=/usr/local/etc/profile.sh
 if [[ -e ${COMPANY_CONFIG} ]] ; then
