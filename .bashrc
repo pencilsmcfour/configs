@@ -1,14 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
 # If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
+if [[ -z $PS1 ]] ; then
+  return
+fi
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -77,10 +76,21 @@ BRIGHT_WHITE="\[\033[01;37m\]"
 # TODO: give a different symbol for changes, new files, deleted files in git
 # TODO: move the user name and current working directory
 
+# kubernetes
+export KUBECONFIG=${HOME}/.kube/config
+alias k=kubectl
+# https://github.com/jonmosco/kube-ps1
+# makes kube_ps1 available as a command
+# kube_ps1 is used in setting the prompt PS1
+KUBE_PS1_FILE=/usr/local/opt/kube-ps1/share/kube-ps1.sh
+if [[ -e ${KUBE_PS1_FILE} ]] ; then
+  source ${KUBE_PS1_FILE}
+fi
+
 export PS1="\
 \$(if [[ \$? -ne 0 ]] ; then echo -n '\[\033[01;31m\]' ; fi)\
 \$(i=0 ; while [[ i -lt COLUMNS ]] ; do echo -n '_'; : \$((i=i+1)) ; done)\n\
-${BRIGHT_YELLOW}| ${BRIGHT_CYAN}\w ${UNCOLORED_TEXT}@ ${BRIGHT_GREEN}\h ${BRIGHT_BLUE}(\u) \
+${BRIGHT_YELLOW}|${UNCOLORED_TEXT}\$(if kube_ps1 &>/dev/null ; then echo -n ' ' ; kube_ps1 ; fi) ${BRIGHT_CYAN}\w ${UNCOLORED_TEXT}@ ${BRIGHT_GREEN}\h ${BRIGHT_BLUE}(\u) \
 ${UNCOLORED_TEXT}[${BRIGHT_MAGENTA}\t${UNCOLORED_TEXT}] \
 ${BRIGHT_YELLOW}\$(git branch 2>/dev/null | awk '\$1 == \"*\" { print \$2 }') \
 ${BRIGHT_RED}\$(test \$(git status --porcelain 2>/dev/null | wc -l) -ne 0 && echo -ne \"\xce\x94\") \
@@ -143,5 +153,129 @@ unset LENGTH_1
 GO_BIN=/usr/local/go/bin/go
 GO_BIN_DIR=$(dirname ${GO_BIN})
 if [[ -e ${GO_BIN} && ! ${PATH} =~ (:|^)${GO_BIN_DIR}(:|$) ]] ; then
-	PATH=${PATH}:${GO_BIN_DIR}
+	export PATH=${PATH}:${GO_BIN_DIR}
 fi
+DEFAULT_GOBIN=~/go/bin
+if [[ -d ${DEFAULT_GOBIN} && ! ${PATH} =~ (:|^)${DEFAULT_GOBIN}(:|$) ]] ; then
+	export PATH=${PATH}:${DEFAULT_GOBIN}
+fi
+
+# Put ~/bin on the path if it exists.
+HOMEBIN=~/bin
+if [[ -d ~/bin && ! "${PATH}" =~ ${HOMEBIN} ]] ; then
+	export PATH=${HOMEBIN}:${PATH}
+fi
+
+# Make sure the location of installed Python2 scripts is in PATH
+if type python &> /dev/null ; then
+  PY_USER_BIN=$(python -c 'import site; print(site.USER_BASE + "/bin")')
+  if [[ -n ${PY_USER_BIN} && \
+        -e ${PY_USER_BIN} && \
+        ! "${PATH}" =~ ${PY_USER_BIN} ]] ; then
+    export PATH=${PY_USER_BIN}:${PATH}
+  fi
+fi
+# Make sure the location of installed Python3 scripts is in PATH
+if type python3 &> /dev/null ; then
+  PY3_USER_BIN=$(python3 -c 'import site; print(site.USER_BASE + "/bin")')
+  if [[ -n ${PY3_USER_BIN} && \
+        -e ${PY3_USER_BIN} && \
+        ! "${PATH}" =~ ${PY3_USER_BIN} ]] ; then
+    export PATH=${PY3_USER_BIN}:${PATH}
+  fi
+fi
+
+# homebrew
+put_last_in_path() {
+  path="$1"
+  putlast="$2"
+  echo -n "${path}" | \
+    awk -v RS=':' \
+        -v ORS=':' \
+        -v putlast="${putlast}" \
+    '$0 !~ putlast {print}'
+  echo "${putlast}"
+}
+BREW_LOCATIONS=(/opt/homebrew ~/.linuxbrew)
+# /usr/local/ is not listed above because I don't want /usr/local/bin/ to be
+# put last in the PATH, as the brew location will be after planned future
+# changes.
+for brew_location in ${BREW_LOCATIONS[@]} ; do
+  brew_file=${brew_location}/bin/brew
+  if [[ -e ${brew_file} ]] ; then
+    eval "$(${brew_file} shellenv)"
+    for d in "${brew_location}/bin" "${brew_location}/sbin" ; do
+      export PATH=$(put_last_in_path "${PATH}" "${d}")
+    done
+  fi
+done
+
+# pyenv
+if type pyenv &> /dev/null ; then
+  eval "$(pyenv init -)"
+fi
+
+# pipx
+DOT_LOCAL_BIN=~/.local/bin
+if [[ -d ${DOT_LOCAL_BIN} && ! "${PATH}" =~ ${DOT_LOCAL_BIN} ]] ; then
+	export PATH=${DOT_LOCAL_BIN}:${PATH}
+fi
+
+# rbenv
+# https://github.com/rbenv/rbenv
+if type rbenv &> /dev/null ; then
+  eval "$(rbenv init -)"
+fi
+SHIMS_DIR_W_SEP=${HOME}/.rbenv/shims:
+export PATH=$(echo "${PATH}" | \
+       sed 's%\('${SHIMS_DIR_W_SEP}'\)\{2,\}%'${SHIMS_DIR_W_SEP}'%')
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "${NVM_DIR}/nvm.sh" ] && . "${NVM_DIR}/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Python poetry
+# https://poetry.eustace.io/
+# https://github.com/sdispater/poetry
+DOT_POETRY_BIN=~/.poetry/bin
+if [[ -d ${DOT_POETRY_BIN} && ! "${PATH}" =~ ${DOT_POETRY_BIN} ]] ; then
+	export PATH=${DOT_POETRY_BIN}:${PATH}
+fi
+
+# aws cli
+alias awscli='docker run --rm -v ~/.aws:/root/.aws amazon/aws-cli:latest'
+alias awsman='docker run --rm -it amazon/aws-cli:latest'
+
+function say_path ()
+{
+  echo $PATH | awk -v RS=':' {print}
+}
+
+# company/job/project-specific configuration
+COMPANY_CONFIG=/usr/local/etc/profile.sh
+if [[ -e ${COMPANY_CONFIG} ]] ; then
+  source ${COMPANY_CONFIG}
+fi
+
+function dedup_awk ()
+{
+  echo -n "$1" | awk -v RS=':' -v ORS=':' \
+    'a[$0] != 1 { print ; a[$0] = 1 ; }' | \
+    sed 's/:$//'
+}
+DEDUPED_PATH=$(dedup_awk ${PATH})
+if [[ "${DEDUPED_PATH}" != "${PATH}" ]] ; then
+  export PATH=${DEDUPED_PATH}
+fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/usr/local/bin/google-cloud-sdk/path.bash.inc' ]; then . '/usr/local/bin/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/usr/local/bin/google-cloud-sdk/completion.bash.inc' ]; then . '/usr/local/bin/google-cloud-sdk/completion.bash.inc'; fi
+
+# This silences the warning message about how the default shell is zsh
+export BASH_SILENCE_DEPRECATION_WARNING=1
