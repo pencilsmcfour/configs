@@ -19,6 +19,9 @@ run_test \
   "a:a" \
   "a"
 run_test \
+  "should:fail" \
+  "should:should:should"
+run_test \
   "a:b:c:b:d" \
   "a:b:c:d"
   run_test \
