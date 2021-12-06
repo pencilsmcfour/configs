@@ -186,6 +186,16 @@ if type python3 &> /dev/null ; then
 fi
 
 # homebrew
+put_last_in_path() {
+  path="$1"
+  putlast="$2"
+  echo -n "${path}" | \
+    awk -v RS=':' \
+        -v ORS=':' \
+        -v putlast="${putlast}" \
+    '$0 !~ putlast {print}'
+  echo "${putlast}"
+}
 BREW_LOCATIONS=(/opt/homebrew ~/.linuxbrew)
 # /usr/local/ is not listed above because I don't want /usr/local/bin/ to be
 # put last in the PATH, as the brew location will be after planned future
@@ -194,6 +204,9 @@ for brew_location in ${BREW_LOCATIONS[@]} ; do
   brew_file=${brew_location}/bin/brew
   if [[ -e ${brew_file} ]] ; then
     eval "$(${brew_file} shellenv)"
+    for d in "${brew_location}/bin" "${brew_location}/sbin" ; do
+      PATH=$(put_last_in_path "${PATH}" "${d}")
+    done
   fi
 done
 
@@ -239,18 +252,6 @@ alias awsman='docker run --rm -it amazon/aws-cli:latest'
 function say_path ()
 {
   echo $PATH | awk -v RS=':' {print}
-}
-
-put_last_in_path() {
-  path="$1"
-  putlast="$2"
-  # if there are spaces in path, don't even try
-  echo -n "${path}" | \
-    awk -v RS=':' \
-        -v ORS=':' \
-        -v putlast="${putlast}" \
-    '$0 !~ putlast {print}'
-  echo "${putlast}"
 }
 
 # company/job/project-specific configuration
