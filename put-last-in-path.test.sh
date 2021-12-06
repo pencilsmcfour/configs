@@ -16,6 +16,7 @@ run_test() {
   fi
 }
 run_test "a" "a" "a"
+run_test "should:fail" "should" "wrong:wrong"
 run_test "a:b:c" "b" "a:c:b"
 run_test "/Users/douglasnaphas/.nvm/versions/node/v16.13.0/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/douglasnaphas/.nvm/versions/node/v12.22.7/bin" \
         "/usr/bin" \
