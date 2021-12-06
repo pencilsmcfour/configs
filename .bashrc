@@ -241,7 +241,7 @@ function say_path ()
   echo $PATH | awk -v RS=':' {print}
 }
 
-put-last-in-path() {
+put_last_in_path() {
   path="$1"
   putlast="$2"
   # if there are spaces in path, don't even try

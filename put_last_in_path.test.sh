@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -e
-unset put-last-in-path
+unset put_last_in_path
 PS1=test source .bashrc
-export -f put-last-in-path
+export -f put_last_in_path
 run_test() {
   path="$1"
   putlast="$2"
   expected="$3"
-  actual=$(put-last-in-path "${path}" "${putlast}")
+  actual=$(put_last_in_path "${path}" "${putlast}")
   if [[ "${expected}" != "${actual}" ]]
   then
     echo "expected ${expected}"

@@ -25,5 +25,5 @@ jobs:
 
       - name: Test
         run: |
-          ./put-last-in-path.test.sh
+          ./put_last_in_path.test.sh
           ./dedup_awk.test.sh
