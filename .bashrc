@@ -205,7 +205,7 @@ for brew_location in ${BREW_LOCATIONS[@]} ; do
   if [[ -e ${brew_file} ]] ; then
     eval "$(${brew_file} shellenv)"
     for d in "${brew_location}/bin" "${brew_location}/sbin" ; do
-      PATH=$(put_last_in_path "${PATH}" "${d}")
+      export PATH=$(put_last_in_path "${PATH}" "${d}")
     done
   fi
 done
